@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kings for Chess — The Thrill of Chess</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#070512; --ink:#f4f1ff; --muted:#a79fce;
+    --gold:#f7c94b; --violet:#7c4dff; --cyan:#22d3ee; --magenta:#ff4d9d; --red:#e11d2a;
+    --glass:rgba(255,255,255,.06); --glass-brd:rgba(255,255,255,.14); --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:'Sora',system-ui,sans-serif;background:var(--bg-0);color:var(--ink);
+    overflow-x:hidden;min-height:100vh;position:relative;-webkit-font-smoothing:antialiased}
+  .aurora{position:fixed;inset:0;z-index:0;overflow:hidden;background:
+     radial-gradient(1200px 700px at 50% -10%, #1a1245 0%, transparent 60%),
+     linear-gradient(180deg,#0a0720 0%, #070512 100%)}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;mix-blend-mode:screen;animation:drift 18s ease-in-out infinite}
+  .b1{width:520px;height:520px;background:radial-gradient(circle,#7c4dff,transparent 70%);top:-140px;left:-80px}
+  .b2{width:480px;height:480px;background:radial-gradient(circle,#22d3ee,transparent 70%);bottom:-160px;right:-60px;animation-delay:-6s}
+  .b3{width:460px;height:460px;background:radial-gradient(circle,#e11d2a,transparent 70%);top:35%;left:44%;animation-delay:-11s;opacity:.4}
+  @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.08)}66%{transform:translate(-30px,25px) scale(.96)}}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .wrap{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;padding:16px clamp(16px,4vw,50px) 22px}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;gap:18px}
+  .brand{display:flex;align-items:center;gap:12px;opacity:0;animation:fadeDown .7s .1s forwards}
+  .brand img{height:52px;width:auto;filter:drop-shadow(0 4px 14px rgba(225,29,42,.35))}
+  .brand .txt h1{font-family:'Bricolage Grotesque';font-weight:800;font-size:18px;letter-spacing:.3px;line-height:1}
+  .brand .txt h1 b{color:var(--red)}
+  .brand .txt small{display:block;font-size:9px;letter-spacing:3px;color:var(--gold);font-weight:600;margin-top:3px}
+  .navlinks{display:flex;gap:6px;opacity:0;animation:fadeDown .7s .2s forwards}
+  .navlinks a{color:var(--muted);text-decoration:none;font-size:14px;padding:9px 15px;border-radius:999px;transition:.25s}
+  .navlinks a:hover{color:#fff;background:var(--glass)}
+  .navlinks a.active{color:#fff;background:linear-gradient(120deg,rgba(124,77,255,.35),rgba(34,211,238,.2));border:1px solid var(--glass-brd)}
+  .navcta{display:flex;gap:10px;opacity:0;animation:fadeDown .7s .3s forwards}
+  .btn{font-family:'Sora';cursor:pointer;border:none;border-radius:999px;font-size:14px;font-weight:500;padding:10px 18px;transition:.25s;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--glass-brd)}
+  .btn.ghost:hover{background:var(--glass)}
+  .btn.gold{background:linear-gradient(120deg,#ffe08a,#f7c94b);color:#231705;font-weight:600;box-shadow:0 8px 24px rgba(247,201,75,.32)}
+  .btn.gold:hover{transform:translateY(-2px)}
+  .btn.red{background:linear-gradient(120deg,#ff4d5e,#e11d2a);color:#fff;font-weight:600;box-shadow:0 8px 24px rgba(225,29,42,.4)}
+  .btn.red:hover{transform:translateY(-2px);filter:brightness(1.06)}
+
+  /* CENTRE STAGE */
+  .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative;padding:6px 0}
+  .tagline{text-align:center;opacity:0;animation:fadeUp .7s .35s forwards}
+  .tagline .pill{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;padding:6px 13px;border-radius:999px;background:var(--glass);border:1px solid var(--glass-brd);color:#e9e4ff;margin-bottom:10px}
+  .tagline .pill i{font-style:normal;color:var(--magenta)}
+  .tagline h2{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(30px,4.4vw,50px);line-height:.98;letter-spacing:-1px}
+  .tagline h2 .g{background:linear-gradient(100deg,#ffe08a,#f7c94b 28%,#ff4d9d 58%,#7c4dff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+  .stagewrap{display:flex;align-items:center;justify-content:center;gap:clamp(18px,3vw,40px);width:100%;perspective:1500px}
+
+  /* BOARD */
+  .stage{position:relative;opacity:0;animation:boardIn 1s .4s forwards}
+  .board{position:relative;width:clamp(300px,42vh,440px);aspect-ratio:1;
+    display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
+    border-radius:14px;overflow:hidden;transform:rotateX(15deg);transform-style:preserve-3d;
+    box-shadow:0 50px 80px -28px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.1),0 0 90px rgba(124,77,255,.3);
+    background:rgba(255,255,255,.03);backdrop-filter:blur(4px)}
+  .sq{position:relative}
+  .sq.d{background:linear-gradient(135deg,rgba(124,77,255,.22),rgba(34,211,238,.12))}
+  .sq.l{background:rgba(255,255,255,.055)}
+  .board::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:14px;
+    background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 30%,transparent 70%,rgba(225,29,42,.08));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+  /* pieces are absolutely positioned over the board, animated by JS */
+  #pieces{position:absolute;inset:0;z-index:5;pointer-events:none}
+  .pc{position:absolute;width:12.5%;height:12.5%;display:grid;place-items:center;
+    font-size:clamp(22px,3.4vh,34px);line-height:1;
+    transition:transform .55s cubic-bezier(.5,.05,.2,1);will-change:transform;transform-style:preserve-3d}
+  .pc span{filter:drop-shadow(0 6px 8px rgba(0,0,0,.55));transform:translateZ(14px)}
+  .pc.w span{color:#fff}
+  .pc.b span{color:#211c30;text-shadow:0 0 1px rgba(255,255,255,.65),0 0 2px rgba(255,255,255,.4);-webkit-text-stroke:.5px rgba(230,225,255,.55)}
+  .pc.king span{filter:drop-shadow(0 0 12px rgba(247,201,75,.7)) drop-shadow(0 6px 8px rgba(0,0,0,.55))}
+  .pc.cap{animation:capture .45s forwards}
+  @keyframes capture{0%{transform:scale(1) rotate(0)}100%{transform:scale(0) rotate(45deg);opacity:0}}
+  .lift{transform:translateZ(30px)}
+
+  /* LOGIN card beside board */
+  .login{width:min(250px,80vw);padding:20px 18px 18px;border-radius:var(--radius);
+    background:linear-gradient(160deg,rgba(30,22,66,.86),rgba(12,9,32,.9));border:1px solid var(--glass-brd);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(14px);
+    opacity:0;animation:fadeUp .8s .7s forwards;flex:0 0 auto}
+  .login h3{font-family:'Bricolage Grotesque';font-size:19px;font-weight:800;margin-bottom:3px}
+  .login .sub{font-size:11px;color:var(--muted);margin-bottom:14px}
+  .fld{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--glass-brd);border-radius:10px;
+    padding:10px 12px;color:#fff;font-family:'Sora';font-size:13px;margin-bottom:9px;outline:none;transition:.2s}
+  .fld::placeholder{color:#8b83b6}
+  .fld:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.18)}
+  .login .btn{width:100%;justify-content:center;margin-top:3px}
+  .login .alt{text-align:center;font-size:11px;color:var(--muted);margin-top:11px}
+  .login .alt a{color:var(--gold);text-decoration:none;font-weight:600}
+  .movelog{margin-top:12px;font-size:10.5px;color:var(--muted);border-top:1px solid var(--glass-brd);padding-top:9px;display:flex;justify-content:space-between;align-items:center}
+  .movelog b{color:#fff;font-weight:600}
+  .live{display:inline-flex;align-items:center;gap:5px;color:#5be08a}
+  .live::before{content:"";width:6px;height:6px;border-radius:50%;background:#5be08a;box-shadow:0 0 8px #5be08a;animation:pulse 1.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* THREE PANELS */
+  .panels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;opacity:0;animation:fadeUp .8s .9s forwards}
+  .panel{position:relative;padding:16px 18px 15px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-brd);overflow:hidden;transition:.3s;cursor:pointer}
+  .panel::before{content:"";position:absolute;inset:0;opacity:0;transition:.3s;background:radial-gradient(340px 140px at 20% 0%,var(--c),transparent 70%)}
+  .panel:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.28)}
+  .panel:hover::before{opacity:.5}
+  .panel .top{display:flex;align-items:center;gap:11px;margin-bottom:6px;position:relative}
+  .panel .ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:rgba(255,255,255,.06);border:1px solid var(--glass-brd)}
+  .panel h4{font-family:'Bricolage Grotesque';font-size:18px;font-weight:800}
+  .panel p{font-size:12px;color:var(--muted);line-height:1.45;position:relative}
+  .p1{--c:rgba(124,77,255,.45)} .p2{--c:rgba(247,201,75,.4)} .p3{--c:rgba(225,29,42,.42)}
+
+  .social{position:fixed;right:18px;bottom:18px;z-index:20;display:flex;gap:9px;opacity:0;animation:fadeIn 1s 1.2s forwards}
+  .social a{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:#fff;text-decoration:none;background:linear-gradient(160deg,rgba(30,22,66,.9),rgba(12,9,32,.9));border:1px solid var(--glass-brd);transition:.25s;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+  .social a:hover{transform:translateY(-4px)}
+  .social a.ig:hover{background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7)}
+  .social a.fb:hover{background:#1877f2}
+  .social a.yt:hover{background:#ff0000}
+  .social svg{width:19px;height:19px;fill:currentColor}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes boardIn{from{opacity:0;transform:translateY(36px) scale(.92)}to{opacity:1;transform:none}}
+
+  @media(max-width:980px){
+    .navlinks{display:none}
+    .stagewrap{flex-direction:column;gap:16px}
+    .login{width:min(320px,92%)}
+    .panels{grid-template-columns:1fr;gap:10px}
+    .tagline h2{font-size:26px}
+    .social{right:14px;bottom:14px}
+  }
+</style>
+</head>
+<body>
+  <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+  <div class="grain"></div>
+
+  <div class="wrap">
+    <nav>
+      <div class="brand">
+        <img src="logo.png" alt="Kings for Chess">
+        <div class="txt"><h1><b>Kings</b>forchess<b>.com</b></h1><small>THE THRILL OF CHESS</small></div>
+      </div>
+      <div class="navlinks">
+        <a href="#" class="active">Home</a><a href="#">Play</a><a href="#">Tournaments</a><a href="#">Leaderboard</a>
+      </div>
+      <div class="navcta">
+        <a href="#" class="btn ghost">Log in</a>
+        <a href="#" class="btn red">Sign up</a>
+      </div>
+    </nav>
+
+    <div class="center">
+      <div class="tagline">
+        <div class="pill"><i>◆</i> Evolutionary &amp; Stalemate-Penalty modes — live</div>
+        <h2>The next evolution of <span class="g">esports chess.</span></h2>
+      </div>
+
+      <div class="stagewrap">
+        <div class="stage">
+          <div class="board" id="board"></div>
+          <div id="pieces"></div>
+        </div>
+
+        <div class="login">
+          <h3>Enter the arena</h3>
+          <div class="sub">Sign in to play, rank up &amp; analyse.</div>
+          <input class="fld" type="email" placeholder="Email address">
+          <input class="fld" type="password" placeholder="Password">
+          <a href="#" class="btn red">Sign in &amp; play</a>
+          <div class="alt">New here? <a href="#">Create free account</a></div>
+          <div class="movelog"><span class="live">Live board</span> <span>Move <b id="mv">1</b></span></div>
+        </div>
+      </div>
+
+      <div class="panels">
+        <div class="panel p1"><div class="top"><div class="ic">♟</div><h4>Join</h4></div><p>Free account, ranked play vs humans or calibrated AI in seconds.</p></div>
+        <div class="panel p2"><div class="top"><div class="ic">♛</div><h4>Membership</h4></div><p>Advanced analysis, AI coach &amp; 60 exclusive boards, pieces &amp; colours.</p></div>
+        <div class="panel p3"><div class="top"><div class="ic">♜</div><h4>Tournaments</h4></div><p>League, round-robin or hybrid formats with your own rules — live.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="social">
+    <a class="ig" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.17.4.36 1 .42 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.17-1 .36-2.2.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.17-.4-.36-1-.42-2.2C2.21 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.17 1-.36 2.2-.42C8.4 2.21 8.8 2.2 12 2.2zm0 3.3A6.5 6.5 0 1018.5 12 6.5 6.5 0 0012 5.5zm0 10.7A4.2 4.2 0 1116.2 12 4.2 4.2 0 0112 16.2zm6.8-11a1.5 1.5 0 11-1.5-1.5 1.5 1.5 0 011.5 1.5z"/></svg></a>
+    <a class="fb" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.75-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg></a>
+    <a class="yt" href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.5a3 3 0 00-2.1-2.1C19.5 3.9 12 3.9 12 3.9s-7.5 0-9.4.5A3 3 0 00.5 6.5 31 31 0 000 12a31 31 0 00.5 5.5 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.5zM9.6 15.6V8.4l6.3 3.6z"/></svg></a>
+  </div>
+
+<script>
+  // ---- Build glass board squares ----
+  const board=document.getElementById('board');
+  for(let i=0;i<64;i++){const r=Math.floor(i/8),c=i%8;const sq=document.createElement('div');sq.className='sq '+(((r+c)%2)?'d':'l');board.appendChild(sq);}
+
+  // ---- Piece engine (auto-playing looped game with real captures) ----
+  const layer=document.getElementById('pieces');
+  const GLY={K:'♚',Q:'♛',R:'♜',B:'♝',N:'♞',P:'♟'};
+  // starting position: [square]=[colour,type]
+  function startPos(){
+    const m={};
+    const back=['R','N','B','Q','K','B','N','R'];
+    for(let c=0;c<8;c++){
+      m['a8'.replace('a',String.fromCharCode(97+c))]=['b',back[c]];
+      m[String.fromCharCode(97+c)+'7']=['b','P'];
+      m[String.fromCharCode(97+c)+'2']=['w','P'];
+      m[String.fromCharCode(97+c)+'1']=['w',back[c]];
+    }
+    return m;
+  }
+  // file/rank -> pixel% (white at bottom). col=file, visualRow: rank8=top
+  // each piece is 12.5% of board (one square); translate% is relative to the piece's own size,
+  // so one square == 100% of the piece width. col/row => *100.
+  function pos(sq){const f=sq.charCodeAt(0)-97;const r=parseInt(sq[1]);const col=f;const row=8-r;return{x:col*100,y:row*100};}
+
+  let pieces={}; // square -> {el,colour,type}
+  function place(sq,colour,type){
+    const el=document.createElement('div');
+    el.className='pc '+colour+(type==='K'?' king':'');
+    el.innerHTML='<span>'+GLY[type]+'</span>';
+    const p=pos(sq);el.style.transform=`translate(${p.x}%,${p.y}%)`;
+    el.style.left='0';el.style.top='0';
+    layer.appendChild(el);
+    pieces[sq]={el,colour,type};
+  }
+  function build(){
+    layer.innerHTML='';pieces={};
+    const m=startPos();
+    for(const sq in m){place(sq,m[sq][0],m[sq][1]);}
+  }
+
+  // lively miniature with several captures, then loops
+  const MOVES=[
+    ['e2','e4'],['e7','e5'],
+    ['g1','f3'],['b8','c6'],
+    ['f1','c4'],['f8','c5'],
+    ['f3','e5'],['c6','e5'],   // NxP, NxN
+    ['c4','f7'],['e8','f7'],   // BxP+, KxB
+    ['d1','h5'],['g7','g6'],
+    ['h5','e5'],['f7','g7'],   // QxN
+    ['e1','g1']                // castle-ish (king hop)
+  ];
+
+  function moveOnce(from,to,cb){
+    const pc=pieces[from];if(!pc){cb&&cb();return;}
+    pc.el.classList.add('lift');
+    // capture if occupied
+    const cap=pieces[to];
+    if(cap){cap.el.classList.add('cap');const old=cap.el;setTimeout(()=>old.remove(),450);}
+    const p=pos(to);
+    requestAnimationFrame(()=>{pc.el.style.transform=`translate(${p.x}%,${p.y}%)`;});
+    delete pieces[from];pieces[to]=pc;
+    setTimeout(()=>{pc.el.classList.remove('lift');cb&&cb();},560);
+  }
+
+  const mvLabel=document.getElementById('mv');
+  function play(){
+    build();
+    let i=0;
+    function step(){
+      if(i>=MOVES.length){setTimeout(()=>{play();},1400);return;}
+      mvLabel.textContent=Math.floor(i/2)+1;
+      const[f,t]=MOVES[i];i++;
+      moveOnce(f,t,()=>setTimeout(step,340));
+    }
+    setTimeout(step,900);
+  }
+  play();
+</script>
+</body>
+</html>
